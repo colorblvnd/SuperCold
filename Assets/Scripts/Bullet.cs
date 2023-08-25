@@ -25,5 +25,9 @@ public class Bullet : MonoBehaviour
         {
             other.gameObject.GetComponent<Enemy>().Die();
         }
+        else if (other.gameObject.CompareTag("Player"))
+        {
+
+        }
     }
 }

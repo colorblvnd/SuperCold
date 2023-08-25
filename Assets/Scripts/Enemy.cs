@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
     private float timer;
     private bool canShoot;
 
+    public enemyState state;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,32 +30,38 @@ public class Enemy : MonoBehaviour
         currWeapon.transform.parent = weaponHolder.transform;
         currWeapon.transform.position = weaponHolder.transform.position;
         attackRadius = 15f;
-        time = 0;
-        timer = 1;
         speed = 4;
-        canShoot = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
-        if (time > timer)
-        {
-            time = 0;
-            canShoot = true;
-        }
-
-        currWeapon.gameObject.transform.LookAt(player.transform);
-
         distanceFromPlayer = Vector3.Distance(player.transform.position, gameObject.transform.position);
+
         if (distanceFromPlayer > attackRadius)
         {
-            ApproachPlayer();
+            state = enemyState.Approaching;
+        }
+        else if (currWeapon.HasAmmo())
+        {
+            state = enemyState.Gunning;
         }
         else
         {
-            AttackPlayer();
+            state = enemyState.Meleeing;
+        }
+
+        switch (state)
+        {
+            case enemyState.Approaching:
+                ApproachPlayer();
+                break;
+            case enemyState.Gunning:
+                ShootPlayer();
+                break;
+            case enemyState.Meleeing:
+                MeleePlayer();
+                break;
         }
     }
 
@@ -67,20 +75,34 @@ public class Enemy : MonoBehaviour
         transform.position = Vector3.MoveTowards(gameObject.transform.position, player.transform.position, speed * Time.deltaTime);
     }
 
-    private void AttackPlayer()
+    private void ShootPlayer()
     {
-        if (canShoot)
-        {
-            PointWeaponAtPlayer();
-            currWeapon.Shoot();
-            canShoot = false;
-        }
+        PointWeaponAtPlayer();
+        currWeapon.Shoot();
+    }
+
+    private void MeleePlayer()
+    {
+        ApproachPlayer();
     }
 
     private void PointWeaponAtPlayer()
     {
-        directionTowardsPlayer = (player.transform.position - transform.position).normalized;
-        Debug.Log(directionTowardsPlayer);
-
+        currWeapon.gameObject.transform.LookAt(player.transform);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Game Over");
+        }
+    }
+}
+
+public enum enemyState
+{
+    Approaching,
+    Gunning,
+    Meleeing
 }
