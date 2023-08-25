@@ -30,5 +30,18 @@ public abstract class Weapon : XRGrabInteractable
         
     }
 
-    public abstract void Shoot();
+    public virtual void Shoot()
+    {
+        AmmoConsumed();
+    }
+
+    private void AmmoConsumed()
+    {
+        numAmmo--;
+    }
+
+    public bool HasAmmo()
+    {
+        return numAmmo > 0;
+    }
 }

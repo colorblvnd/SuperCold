@@ -1,3 +1,4 @@
+using SerializableCallback;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -16,28 +17,31 @@ public class Pistol : Weapon
     {
         numProjectiles = 1;
         numAmmo = 6;
-        nextShotDelay = 0.3f;
+        nextShotDelay = 0.7f;
         canShoot = true;
 
         time = 0;
-        timer = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        /**
         time += Time.deltaTime;
-        if (time > timer)
+        if (time > nextShotDelay)
         {
-            time = 0;
-            Shoot();
-        }**/
+            canShoot = true;
+        }
     }
 
     public override void Shoot()
     {
-        Instantiate(bulletPrefab, bulletSpawn.transform.position, bulletSpawn.transform.rotation);
+        if (numAmmo > 0 && canShoot)
+        {
+            base.Shoot();
+            Instantiate(bulletPrefab, bulletSpawn.transform.position, bulletSpawn.transform.rotation);
+            canShoot = false;
+            time = 0;
+        }
     }
 
     protected override void OnActivated(ActivateEventArgs args)
