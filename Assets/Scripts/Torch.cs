@@ -8,20 +8,31 @@ public class Torch : MonoBehaviour
     [SerializeField] private ParticleSystem.EmissionModule psEmission;
     [Range(0f, 1f)]
     public float gameSpeed;
-    [Range(0, 100)]
-    public int emission;
+
+    [Range(0f, 100f)]
+    public float emissionRate;
+
+    [SerializeField] private AnimationCurve curve;
+    [SerializeField] private float curveEval;
 
     // Start is called before the first frame update
     void Start()
     {
         psEmission = ps.emission;
+        emissionRate = 50;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //gameSpeed = Time.timeScale; 
         Time.timeScale = gameSpeed;
-        psEmission.rateOverTime = emission;
+        emissionRate += curve.Evaluate(gameSpeed) * Time.unscaledDeltaTime;
+        emissionRate = Mathf.Clamp(emissionRate, 0f, 100f);
+
+        psEmission.rateOverTime = emissionRate;
+
+
         ps.Simulate(Time.unscaledDeltaTime, true, false);
     }
 
