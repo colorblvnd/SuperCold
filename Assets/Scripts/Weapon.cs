@@ -11,8 +11,8 @@ public abstract class Weapon : XRGrabInteractable
     [SerializeField] protected int numAmmo;
 
     [SerializeField] protected float nextShotDelay;
-
-    [SerializeField] public bool canShoot { get; protected set; }
+    
+    [SerializeField] public bool loaded { get; protected set; }
 
     [SerializeField] protected GameObject bulletPrefab;
 
@@ -32,12 +32,45 @@ public abstract class Weapon : XRGrabInteractable
 
     public virtual void Shoot()
     {
-        AmmoConsumed();
+        if (CanShoot())
+        {
+            AmmoConsumed();
+            loaded = false;
+            Invoke(nameof(LoadBullet), nextShotDelay);
+            for (int i = 0; i < numProjectiles; i++)
+            {
+                SpawnBullet();
+            }
+        }
+    }
+
+    private void LoadBullet()
+    {
+        loaded = true;
+    }
+
+    private bool CanShoot()
+    {
+        if (numAmmo > 0 && loaded)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void SpawnBullet()
+    {
+        Instantiate(bulletPrefab, bulletSpawn.transform.position, Quaternion.Euler(bulletSpawn.transform.rotation.eulerAngles));
     }
 
     private void AmmoConsumed()
     {
         numAmmo--;
+    }
+
+    protected void AmmoPickedUp()
+    {
+        numAmmo++;
     }
 
     public bool HasAmmo()
