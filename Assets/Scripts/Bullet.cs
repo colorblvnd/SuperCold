@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Invoke(nameof(Despawn), 6);
     }
 
     // Update is called once per frame
@@ -25,5 +25,10 @@ public class Bullet : MonoBehaviour
         {
 
         }
+    }
+
+    void Despawn()
+    {
+        Destroy(gameObject);
     }
 }

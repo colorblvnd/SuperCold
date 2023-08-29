@@ -77,4 +77,16 @@ public abstract class Weapon : XRGrabInteractable
     {
         return numAmmo > 0;
     }
+
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
+        GetComponent<Rigidbody>().useGravity = false;
+    }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+        GetComponent<Rigidbody>().useGravity = true;
+    }
 }
