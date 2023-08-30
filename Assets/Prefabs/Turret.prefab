@@ -515,7 +515,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1933060233955780537}
   - component: {fileID: 1933060233955780536}
-  - component: {fileID: 1933060233955780539}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Turret
@@ -559,20 +558,3 @@ MonoBehaviour:
   bulletSpawn: {fileID: 1933060232456745774}
   bulletPrefab: {fileID: 6721613556891356253, guid: 492dd6dc3f1590c42869ee11819fb4f2,
     type: 3}
---- !u!1818360609 &1933060233955780539
-RotationConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1933060233955780534}
-  m_Enabled: 1
-  m_Weight: 1
-  m_RotationAtRest: {x: 0, y: 0, z: 0}
-  m_RotationOffset: {x: 0, y: 0, z: 0}
-  m_AffectRotationX: 1
-  m_AffectRotationY: 1
-  m_AffectRotationZ: 1
-  m_IsContraintActive: 0
-  m_IsLocked: 0
-  m_Sources: []

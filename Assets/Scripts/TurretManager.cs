@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TurretManager : MonoBehaviour
@@ -10,11 +11,17 @@ public class TurretManager : MonoBehaviour
     public bool yes;
 
     private float timer;
-    [SerializeField] float delay;
     private int currTurret;
+    [SerializeField] private TurretState state;
+    private int numStates;
 
-    private enum TurretsState
+    [SerializeField] float spiralingDelay;
+    [SerializeField] float pulsingDelay;
+    [SerializeField] float batchesDelay;
+
+    private enum TurretState
     {
+        Idle,
         Spiraling,
         Pulsing,
         Batches
@@ -23,8 +30,11 @@ public class TurretManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        delay = 0.9f;
+        spiralingDelay = 0.9f;
+        pulsingDelay = 1.5f;
+        batchesDelay = 1.3f;
         timer = 0;
+        numStates = System.Enum.GetValues(typeof(TurretState)).Length - 1;
     }
 
     // Update is called once per frame
@@ -33,11 +43,37 @@ public class TurretManager : MonoBehaviour
         if (yes)
         {
             yes = false;
-            ShootAll();
+            CycleState();
+            currTurret = 0;
         }
 
         timer += Time.deltaTime;
-        ShootAfterDelay();
+
+        switch (state)
+        {
+            case TurretState.Idle:
+                break;
+            case TurretState.Spiraling:
+                SpiralShooting();
+                break;
+            case TurretState.Pulsing:
+                PulseShooting();
+                break;
+            case TurretState.Batches:
+                BatchShooting();
+                break;
+        }
+    }
+
+    void CycleState()
+    {
+        timer = 0;
+        state += 1;
+        if ((int)state > numStates)
+        {
+            state -= 3;
+        }
+        Debug.Log(state);
     }
 
     void ShootAll()
@@ -55,12 +91,33 @@ public class TurretManager : MonoBehaviour
         currTurret = currTurret > 7 ? 0 : currTurret;
     }
 
-    void ShootAfterDelay()
+    void SpiralShooting()
     {
-        if (timer > delay)
+        if (timer > spiralingDelay)
         {
-            timer -= delay;
+            timer -= spiralingDelay;
             ShootNextTurret();
+        }
+    }
+
+    void PulseShooting()
+    {
+        if (timer > pulsingDelay)
+        {
+            timer -= pulsingDelay;
+            ShootAll();
+        }
+    }
+
+    void BatchShooting()
+    {
+        if (timer > batchesDelay)
+        {
+            timer -= batchesDelay;
+            for (int i = 0; i < 2; i++)
+            {
+                ShootNextTurret();
+            }
         }
     }
 }

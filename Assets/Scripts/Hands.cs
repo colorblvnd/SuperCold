@@ -15,8 +15,8 @@ public class Hands : XRDirectInteractor
 
     private float averageVelocity;
 
-    private bool hasWeapon;
-    private Weapon currWeapon;
+    public bool hasWeapon { get; private set; }
+    public Weapon currWeapon { get; private set; }
 
     // Start is called before the first frame update
     protected override void Start()
