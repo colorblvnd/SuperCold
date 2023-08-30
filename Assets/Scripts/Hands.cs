@@ -9,31 +9,44 @@ public class Hands : XRDirectInteractor
     private Rigidbody rb;
 
     [SerializeField] private TextMeshProUGUI handInfo;
+    [SerializeField] private TrackVelocity leftHandVelocity;
+    [SerializeField] private TrackVelocity rightHandVelocity;
+    [SerializeField] private TrackVelocity headVelocity;
 
-    Vector3 prevPos;
-    Vector3 currPos;
+    private float averageVelocity;
 
-    float distanceMoved;
-    float velocity;
+    private bool hasWeapon;
+    private Weapon currWeapon;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         rb = GetComponent<Rigidbody>();
-        prevPos = transform.position;
-        currPos = transform.position;
+        hasWeapon = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        prevPos = currPos;
-        currPos = transform.position;
-        distanceMoved = Vector3.Distance(prevPos, currPos);
-        velocity = distanceMoved < 0.0005f ? 0f : Mathf.Clamp(distanceMoved / Time.deltaTime, 0f, 1f);
 
-        handInfo.text = distanceMoved.ToString() + "\n" + velocity.ToString();
-        //Time.timeScale = velocity;
+    }
+
+    private void LateUpdate()
+    {
+        averageVelocity = (leftHandVelocity.velocity + rightHandVelocity.velocity + headVelocity.velocity) / 3;
+        //Time.timeScale = averageVelocity;
+    }
+
+    public void setCurrentWeapon(Weapon w)
+    {
+        hasWeapon = true;
+        currWeapon = w;
+    }
+
+    public void dropWeapon()
+    {
+        hasWeapon = false;
+        currWeapon = null;
     }
 }

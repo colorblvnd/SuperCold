@@ -21,6 +21,10 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Turret"))
+        {
+            other.gameObject.SetActive(false);
+        }
         if (other.gameObject.CompareTag("Player"))
         {
 
