@@ -20,7 +20,8 @@ public class Pistol : Weapon
         numAmmo = maxAmmoCount;
         nextShotDelay = 0.7f;
         loaded = true;
-        accuracy = 97.0f;
+        accuracy = 98.0f;
+        fullAuto = false;
     }
 
     // Update is called once per frame

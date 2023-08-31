@@ -29,6 +29,10 @@ public class Bullet : MonoBehaviour
         {
 
         }
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            
+        }
     }
 
     void Despawn()

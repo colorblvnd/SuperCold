@@ -8,6 +8,7 @@ public class TextManager : MonoBehaviour
 {
     [SerializeField] private Canvas textCanvas;
     [SerializeField] private TextMeshProUGUI displayedText;
+    [SerializeField] private TurretManager turrets;
     [SerializeField] private List<string> texts;
     [SerializeField] private bool loop;
     private int currText;
@@ -50,8 +51,14 @@ public class TextManager : MonoBehaviour
                 {
                     allMessagesDisplayed = true;
                     textCanvas.gameObject.SetActive(false);
+                    turrets.CycleState();
                 }
             }
         }
+    }
+
+    private void OnFinished()
+    {
+
     }
 }

@@ -7,6 +7,7 @@ public class AmmunitionPile : XRBaseInteractable
 {
     [SerializeField] GameObject handGameObject;
     [SerializeField] Hands rightHand;
+    [SerializeField] LerpColor lerper;
 
     private float cooldown;
 
@@ -17,6 +18,7 @@ public class AmmunitionPile : XRBaseInteractable
     {
         rightHand = handGameObject.GetComponent<Hands>();
         cooldown = 10;
+        onCooldown = false;
     }
 
     // Update is called once per frame
@@ -30,6 +32,8 @@ public class AmmunitionPile : XRBaseInteractable
         base.OnSelectEntered(args);
         if (!onCooldown && rightHand.hasWeapon)
         {
+            Debug.Log("interacted properly");
+            lerper.BeginLerp();
             rightHand.currWeapon.RefillAmmo();
             onCooldown = true;
             Invoke(nameof(AmmoCooldown), cooldown);

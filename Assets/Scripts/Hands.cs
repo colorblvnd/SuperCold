@@ -35,7 +35,7 @@ public class Hands : XRDirectInteractor
     private void LateUpdate()
     {
         averageVelocity = (leftHandVelocity.velocity + rightHandVelocity.velocity + headVelocity.velocity) / 3;
-        //Time.timeScale = averageVelocity;
+        Time.timeScale = averageVelocity;
     }
 
     public void setCurrentWeapon(Weapon w)

@@ -16,9 +16,13 @@ public abstract class Weapon : XRGrabInteractable
     [SerializeField] protected float accuracy;
 
     [SerializeField] public bool loaded { get; protected set; }
+    [SerializeField] public bool fullAuto;
+    [SerializeField] public bool triggerDown;
 
     [SerializeField] protected GameObject bulletPrefab;
     [SerializeField] protected GameObject bulletSpawn;
+
+    [SerializeField] private XRBaseController handWithWeapon;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +34,14 @@ public abstract class Weapon : XRGrabInteractable
     void Update()
     {
         
+    }
+
+    public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
+    {
+        //if (triggerDown && fullAuto)
+        //{
+        //    Shoot();
+        //}
     }
 
     public virtual void Shoot()
@@ -90,27 +102,37 @@ public abstract class Weapon : XRGrabInteractable
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         base.OnSelectEntered(args);
-        GetComponent<Rigidbody>().useGravity = false;
+        //GetComponent<Rigidbody>().useGravity = false;
+
+        //var controllerInteractor = args.interactorObject as XRBaseControllerInteractor;
+        //handWithWeapon = controllerInteractor.xrController;
+
+        //handWithWeapon.SendHapticImpulse(1, 0.5f);
+        //handWithWeapon.GetComponent<Hands>().setCurrentWeapon(this);
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
-        GetComponent<Rigidbody>().useGravity = true;
-        //args.interactorObject.
+        //GetComponent<Rigidbody>().useGravity = true;
 
-
-        //base.OnSelectEntered(args);
-        //m_BalloonInstance = Instantiate(balloonPrefab, attachPoint);
         //var controllerInteractor = args.interactorObject as XRBaseControllerInteractor;
-        //m_Controller = controllerInteractor.xrController;
-
-        //m_Controller.SendHapticImpulse(1, 0.5f);
+        //handWithWeapon = controllerInteractor.xrController;
+        //handWithWeapon.GetComponent<Hands>().dropWeapon();
     }
 
     protected override void OnActivated(ActivateEventArgs args)
     {
         base.OnActivated(args);
         Shoot();
+
+        triggerDown = true;
+    }
+
+    protected override void OnDeactivated(DeactivateEventArgs args)
+    {
+        base.OnDeactivated(args);
+
+        triggerDown = false;
     }
 }

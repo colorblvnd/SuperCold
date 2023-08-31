@@ -16,6 +16,7 @@ public class Shotgun : Weapon
         nextShotDelay = 0.3f;
         loaded = true;
         accuracy = 95.0f;
+        fullAuto = true;
     }
 
     // Update is called once per frame

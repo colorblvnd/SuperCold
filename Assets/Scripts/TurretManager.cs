@@ -65,7 +65,7 @@ public class TurretManager : MonoBehaviour
         }
     }
 
-    void CycleState()
+    public void CycleState()
     {
         timer = 0;
         state += 1;
@@ -76,7 +76,7 @@ public class TurretManager : MonoBehaviour
         Debug.Log(state);
     }
 
-    void ShootAll()
+    private void ShootAll()
     {
         foreach (Turret t in turrets)
         {
@@ -84,14 +84,14 @@ public class TurretManager : MonoBehaviour
         }
     }
 
-    void ShootNextTurret()
+    private void ShootNextTurret()
     {
         turrets.ElementAt(currTurret).Shoot();
         currTurret++;
         currTurret = currTurret > 7 ? 0 : currTurret;
     }
 
-    void SpiralShooting()
+    private void SpiralShooting()
     {
         if (timer > spiralingDelay)
         {
@@ -100,7 +100,7 @@ public class TurretManager : MonoBehaviour
         }
     }
 
-    void PulseShooting()
+    private void PulseShooting()
     {
         if (timer > pulsingDelay)
         {
@@ -109,7 +109,7 @@ public class TurretManager : MonoBehaviour
         }
     }
 
-    void BatchShooting()
+    private void BatchShooting()
     {
         if (timer > batchesDelay)
         {
