@@ -24,6 +24,6 @@ public class TrackVelocity : MonoBehaviour
         prevPos = currPos;
         currPos = transform.position;
         distanceMoved = Vector3.Distance(prevPos, currPos);
-        velocity = distanceMoved < 0.0005f ? 0f : Mathf.Clamp(distanceMoved / Time.deltaTime, 0f, 1f);
+        velocity = distanceMoved < 0.0005f ? 0f : distanceMoved / Time.deltaTime;
     }
 }

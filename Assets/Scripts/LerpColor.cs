@@ -5,31 +5,32 @@ using UnityEngine;
 public class LerpColor : MonoBehaviour
 {
     private float current;
-    private float normal;
+    private float target;
     private float speed;
-    private Color orig;
+    private Color origColor;
     private Color currColor;
-    private Color black;
+    [SerializeField] private Color startLerpColor;
 
     // Start is called before the first frame update
     void Start()
     {
-        orig = GetComponent<MeshRenderer>().material.color;
+        origColor = GetComponent<MeshRenderer>().material.color;
         current = 0;
-        normal = 1;
+        target = 1;
         speed = 1.0f;
-        black = Color.black;
     }
 
     void Update()
     {
-        current = Mathf.MoveTowards(current, normal, speed * Time.unscaledDeltaTime);
-        GetComponent<MeshRenderer>().material.color = Color.Lerp(black, orig, current);
+        current = Mathf.MoveTowards(current, target, speed * Time.unscaledDeltaTime);
+        GetComponent<MeshRenderer>().material.color = Color.Lerp(startLerpColor, origColor, current);
     }
 
-    public void BeginLerp()
+    public void BeginLerp(float p_target)
     {
         current = 0;
-        GetComponent<MeshRenderer>().material.color = black;
+        speed = 1;
+        speed /= p_target;
+        GetComponent<MeshRenderer>().material.color = startLerpColor;
     }
 }

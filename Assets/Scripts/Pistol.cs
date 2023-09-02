@@ -10,7 +10,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Pistol : Weapon
 {
-    public bool yes;
 
     // Start is called before the first frame update
     void Start()
@@ -27,10 +26,6 @@ public class Pistol : Weapon
     // Update is called once per frame
     void Update()
     {
-        if (yes)
-        {
-            yes = false;
-            Shoot();
-        }
+
     }
 }

@@ -255,11 +255,10 @@ MonoBehaviour:
   accuracy: 0
   fullAuto: 0
   triggerDown: 0
-  bulletPrefab: {fileID: 6721613556891356253, guid: 492dd6dc3f1590c42869ee11819fb4f2,
+  bulletPrefab: {fileID: 6721613556891356253, guid: 46f210be466458f4ea3323eca742d012,
     type: 3}
   bulletSpawn: {fileID: 579490589893394119}
   handWithWeapon: {fileID: 0}
-  yes: 0
 --- !u!54 &579490590104868935
 Rigidbody:
   m_ObjectHideFlags: 0

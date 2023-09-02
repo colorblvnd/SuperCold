@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Shotgun : Weapon
 {
-    public bool yes;
-    public bool full;
 
     // Start is called before the first frame update
     void Start()
@@ -22,15 +20,6 @@ public class Shotgun : Weapon
     // Update is called once per frame
     void Update()
     {
-        if (yes)
-        {
-            yes = false;
-            Shoot();
-        }
 
-        if (full)
-        {
-            Shoot();
-        }
     }
 }

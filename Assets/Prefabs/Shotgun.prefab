@@ -486,12 +486,12 @@ MonoBehaviour:
   numAmmo: 0
   nextShotDelay: 0
   accuracy: 0
-  bulletPrefab: {fileID: 6721613556891356253, guid: 492dd6dc3f1590c42869ee11819fb4f2,
+  fullAuto: 0
+  triggerDown: 0
+  bulletPrefab: {fileID: 6721613556891356253, guid: 46f210be466458f4ea3323eca742d012,
     type: 3}
   bulletSpawn: {fileID: 1039757827680832998}
   handWithWeapon: {fileID: 0}
-  yes: 0
-  full: 0
 --- !u!54 &1039757827346272239
 Rigidbody:
   m_ObjectHideFlags: 0

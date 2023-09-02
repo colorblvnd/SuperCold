@@ -8,16 +8,22 @@ public class TurretManager : MonoBehaviour
 {
     [SerializeField] List<Turret> turrets;
 
-    public bool yes;
+    private float shotTimer;
+    private float stateTimer;
+    private float stateSwitchDelay;
 
-    private float timer;
+    [SerializeField] private float spiralingDelay;
+    [SerializeField] private float pulsingDelay;
+    [SerializeField] private float batchesDelay;
+
     private int currTurret;
-    [SerializeField] private TurretState state;
     private int numStates;
 
-    [SerializeField] float spiralingDelay;
-    [SerializeField] float pulsingDelay;
-    [SerializeField] float batchesDelay;
+    private bool turretsActive;
+
+    private TurretState state;
+
+    [SerializeField] ScreensManager screenManager;
 
     private enum TurretState
     {
@@ -33,21 +39,30 @@ public class TurretManager : MonoBehaviour
         spiralingDelay = 0.9f;
         pulsingDelay = 1.5f;
         batchesDelay = 1.3f;
-        timer = 0;
+        shotTimer = 0;
+        stateTimer = 0;
+        stateSwitchDelay = 10f;
         numStates = System.Enum.GetValues(typeof(TurretState)).Length - 1;
+        turretsActive = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (yes)
-        {
-            yes = false;
-            CycleState();
-            currTurret = 0;
-        }
 
-        timer += Time.deltaTime;
+    }
+
+    public void UpdateTurrets()
+    {
+        stateTimer += Time.deltaTime;
+        shotTimer += Time.deltaTime;
+        screenManager.UpdateAllScreenTexts("Time until next phase: " + (int)(stateSwitchDelay - stateTimer + 1) + "\n" + "Current turret state: " + state);
+
+        if (stateTimer >= stateSwitchDelay)
+        {
+            stateTimer -= stateSwitchDelay;
+            CycleState();
+        }
 
         switch (state)
         {
@@ -67,21 +82,21 @@ public class TurretManager : MonoBehaviour
 
     public void CycleState()
     {
-        timer = 0;
+        shotTimer = 0;
         state += 1;
-        if ((int)state > numStates)
-        {
-            state -= 3;
-        }
+        if ((int)state > numStates) { state -= 3; }
         Debug.Log(state);
+    }
+
+    public void SetIdle()
+    {
+        state = TurretState.Idle;
+        SetAllTurretsActive(false);
     }
 
     private void ShootAll()
     {
-        foreach (Turret t in turrets)
-        {
-            t.Shoot();
-        }
+        foreach (Turret t in turrets) { t.Shoot(); }
     }
 
     private void ShootNextTurret()
@@ -93,31 +108,42 @@ public class TurretManager : MonoBehaviour
 
     private void SpiralShooting()
     {
-        if (timer > spiralingDelay)
+        if (shotTimer >= spiralingDelay)
         {
-            timer -= spiralingDelay;
+            shotTimer -= spiralingDelay;
             ShootNextTurret();
         }
     }
 
     private void PulseShooting()
     {
-        if (timer > pulsingDelay)
+        if (shotTimer >= pulsingDelay)
         {
-            timer -= pulsingDelay;
+            shotTimer -= pulsingDelay;
             ShootAll();
         }
     }
 
     private void BatchShooting()
     {
-        if (timer > batchesDelay)
+        currTurret = currTurret % 2 == 0 ? currTurret : currTurret - 1;
+        if (shotTimer >= batchesDelay)
         {
-            timer -= batchesDelay;
-            for (int i = 0; i < 2; i++)
-            {
-                ShootNextTurret();
-            }
+            shotTimer -= batchesDelay;
+            for (int i = 0; i < 2; i++) { ShootNextTurret(); }
         }
+    }
+
+    public void SetAllTurretsActive(bool activated)
+    {
+        foreach (Turret t in turrets) { t.SetTurretActive(activated); }
+        turretsActive = activated;
+    }
+
+    public void IncreaseDifficulty()
+    {
+        spiralingDelay -= 0.05f;
+        pulsingDelay -= 0.05f;
+        batchesDelay -= 0.05f;
     }
 }

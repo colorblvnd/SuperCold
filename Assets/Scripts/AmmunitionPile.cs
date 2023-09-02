@@ -6,7 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class AmmunitionPile : XRBaseInteractable
 {
     [SerializeField] GameObject handGameObject;
-    [SerializeField] Hands rightHand;
+    [SerializeField] RightHand rightHand;
     [SerializeField] LerpColor lerper;
 
     private float cooldown;
@@ -16,7 +16,7 @@ public class AmmunitionPile : XRBaseInteractable
     // Start is called before the first frame update
     void Start()
     {
-        rightHand = handGameObject.GetComponent<Hands>();
+        rightHand = handGameObject.GetComponent<RightHand>();
         cooldown = 10;
         onCooldown = false;
     }
@@ -33,7 +33,7 @@ public class AmmunitionPile : XRBaseInteractable
         if (!onCooldown && rightHand.hasWeapon)
         {
             Debug.Log("interacted properly");
-            lerper.BeginLerp();
+            lerper.BeginLerp(cooldown);
             rightHand.currWeapon.RefillAmmo();
             onCooldown = true;
             Invoke(nameof(AmmoCooldown), cooldown);

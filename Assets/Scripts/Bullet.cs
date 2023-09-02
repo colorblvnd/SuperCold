@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using TMPro;
 
 public class Bullet : MonoBehaviour
 {
     public float bulletSpeed;
+    public float despawnTimer;
 
     // Start is called before the first frame update
     void Start()
     {
-        Invoke(nameof(Despawn), 6);
+        despawnTimer = 6f;
+        Invoke(nameof(Despawn), despawnTimer);
     }
 
     // Update is called once per frame
@@ -21,17 +24,10 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Turret"))
-        {
-            other.gameObject.SetActive(false);
-        }
         if (other.gameObject.CompareTag("Player"))
         {
-
-        }
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            
+            other.gameObject.GetComponent<HeadScript>().HeadHit();
+            Destroy(gameObject);
         }
     }
 

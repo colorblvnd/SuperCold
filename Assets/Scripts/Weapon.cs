@@ -38,10 +38,11 @@ public abstract class Weapon : XRGrabInteractable
 
     public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
     {
-        //if (triggerDown && fullAuto)
-        //{
-        //    Shoot();
-        //}
+        base.ProcessInteractable(updatePhase);
+        if (triggerDown && fullAuto)
+        {
+            Shoot();
+        }
     }
 
     public virtual void Shoot()
@@ -102,23 +103,23 @@ public abstract class Weapon : XRGrabInteractable
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         base.OnSelectEntered(args);
-        //GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().useGravity = false;
 
-        //var controllerInteractor = args.interactorObject as XRBaseControllerInteractor;
-        //handWithWeapon = controllerInteractor.xrController;
+        var controllerInteractor = args.interactorObject as XRBaseControllerInteractor;
+        handWithWeapon = controllerInteractor.xrController;
 
-        //handWithWeapon.SendHapticImpulse(1, 0.5f);
-        //handWithWeapon.GetComponent<Hands>().setCurrentWeapon(this);
+        handWithWeapon.SendHapticImpulse(1, 0.5f);
+        handWithWeapon.GetComponent<RightHand>().SetCurrentWeapon(this);
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
-        //GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().useGravity = true;
 
-        //var controllerInteractor = args.interactorObject as XRBaseControllerInteractor;
-        //handWithWeapon = controllerInteractor.xrController;
-        //handWithWeapon.GetComponent<Hands>().dropWeapon();
+        var controllerInteractor = args.interactorObject as XRBaseControllerInteractor;
+        handWithWeapon = controllerInteractor.xrController;
+        handWithWeapon.GetComponent<RightHand>().DropWeapon();
     }
 
     protected override void OnActivated(ActivateEventArgs args)
